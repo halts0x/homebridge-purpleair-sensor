@@ -1,3 +1,7 @@
+import {
+  AccessoryConfig,
+} from 'homebridge';
+
 export function parsePurpleAirJson(data, averages?: string, conversion?: string, usesLocalSensor = false) {
   if (usesLocalSensor) {
     return parseLocalPurpleAirJson(data, averages, conversion);
@@ -92,9 +96,9 @@ export class SensorReading {
     // This calculation was lifted from https://github.com/SANdood/homebridge-purpleair.
     if (aqi === undefined) {
       return 0; // Error or unknown response
-    } else if (aqi <= PurpleAirSensor.AQExcellent) {
+    } else if (aqi <= AccessoryConfig.AQExcellent) {
       return 1; // Return EXCELLENT
-    } else if (aqi <= this.AQGood) {
+    } else if (aqi <= config.AQGood) {
       return 2; // Return GOOD
     } else if (aqi <= this.AQFair) {
       return 3; // Return FAIR
