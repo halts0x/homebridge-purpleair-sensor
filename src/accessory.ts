@@ -58,7 +58,7 @@ class PurpleAirSensor implements AccessoryPlugin {
     this.localIPAddress = config.localIPAddress;
     this.apiReadKey = config.apiReadKey;
     this.service = new hap.Service.AirQualitySensor(this.name);
-    this.AQExcellent = config.AQExcellent;
+    AQExcellent = config.AQExcellent;
 
     this.verboseLogging = config.verboseLogging;
 
