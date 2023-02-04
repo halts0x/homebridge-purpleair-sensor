@@ -1,6 +1,13 @@
 # PurpleAir Homebridge Accessory Plugin
 
-[![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
+Custom air quality levels
+custom refresh rate config
+PM10.0 level
+
+to add
+->split sensors A+B?
+report faulty sensor
+fix 0ug/m3 report
 
 This is a Homebridge accessory plugin for monitoring air quality in Apple HomeKit. It creates virtual HomeKit
 air quality sensors based on real PurpleAir sensors. Once setup, you can also configure home automation
