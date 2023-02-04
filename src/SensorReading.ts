@@ -23,7 +23,7 @@ function parseRemotePurpleAirJson(data, averages?: string, conversion?: string) 
   const humidity = parseFloat(sensor_data.humidity);
   const sensor = sensor_data.sensor_index;
   const voc = sensor_data.voc ? parseFloat(sensor_data.voc) : null;
-  return new SensorReading(sensor, pm25, pm25Cf1, humidity, voc, conv);
+  return new SensorReading(sensor, pm25, pm100, pm25Cf1, humidity, voc, conv);
 }
 
 function parseLocalPurpleAirJson(data, averages?: string, conversion?: string) {
