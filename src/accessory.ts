@@ -25,10 +25,10 @@ export = (api: API) => {
 class PurpleAirSensor implements AccessoryPlugin {
 
   // By default, only fetch new data every 5 mins.
-  static readonly DEFAULT_UPDATE_INTERVAL_SECS = 300;
+  static readonly DEFAULT_UPDATE_INTERVAL_SECS = 40;
 
   // Never update more frequently than the following value.
-  static readonly MIN_UPDATE_INTERVAL_MS = 20 * 1000;
+  static readonly MIN_UPDATE_INTERVAL_MS = 10 * 1000;
 
   private readonly logger: Logging;
   private readonly name: string;
