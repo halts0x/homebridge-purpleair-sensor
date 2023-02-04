@@ -1,9 +1,3 @@
-import {
-  AccessoryConfig,
-} from 'homebridge';
-
-import AQExcellent from './accessory.ts';
-
 export function parsePurpleAirJson(data, averages?: string, conversion?: string, usesLocalSensor = false) {
   if (usesLocalSensor) {
     return parseLocalPurpleAirJson(data, averages, conversion);
@@ -35,7 +29,7 @@ function parseRemotePurpleAirJson(data, averages?: string, conversion?: string) 
 function parseLocalPurpleAirJson(data, averages?: string, conversion?: string) {
   const conv = conversion ?? 'None';
   const pm25 = parseFloat(data.pm2_5_atm);
-  const pm100 = parseFloat(data.pm10_0);
+  const pm100 = parseFloat(data.pm10_0_atm);
   const pm25Cf1 = parseFloat(data.pm2_5_cf_1);
   const humidity = parseFloat(data.current_humidity);
   const sensor = data.Id;
@@ -95,22 +89,22 @@ export class SensorReading {
   }
 
   static aqiToHomekit(aqi: number): number {
-     var public config: AccessoryConfig,
-    // This calculation was lifted from https://github.com/SANdood/homebridge-purpleair.
+  /*  // This calculation was lifted from https://github.com/SANdood/homebridge-purpleair.
     if (aqi === undefined) {
       return 0; // Error or unknown response
-    } else if (aqi <= config.AQExcellent) {
+    } else if (aqi <= AQLevels[0]) {
       return 1; // Return EXCELLENT
-    } else if (aqi <= config.AQGood) {
+    } else if (aqi <= AQLevels[1]) {
       return 2; // Return GOOD
-    } else if (aqi <= config.AQFair) {
+    } else if (aqi <= AQLevels[2]) {
       return 3; // Return FAIR
-    } else if (aqi <= config.AQInf) {
+    } else if (aqi <= AQLevels[3]) {
       return 4; // Return INFERIOR
-    } else if (aqi > config.AQInf) {
+    } else if (aqi > AQLevels[3]) {
       return 5; // Return POOR (Homekit only goes to cat 5, so combined the last two AQI cats of Very Unhealty and Hazardous.
     }
-    return 0;
+    return 0;*/
+    return aqi;
   }
 
   static pmToAQandU(pm: number): number {
