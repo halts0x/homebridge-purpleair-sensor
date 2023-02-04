@@ -92,7 +92,7 @@ export class SensorReading {
     return SensorReading.aqiToHomekit(this.aqi);
   }
 
-  static aqiToHomekit(aqi: number): number {
+  static aqiToHomekit(aqi: number, config: AccessoryConfig): number {
     // This calculation was lifted from https://github.com/SANdood/homebridge-purpleair.
     if (aqi === undefined) {
       return 0; // Error or unknown response
