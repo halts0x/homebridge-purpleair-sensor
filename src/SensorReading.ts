@@ -10,6 +10,7 @@ function parseRemotePurpleAirJson(data, averages?: string, conversion?: string) 
   const sensor_data = data.sensor;
   const sensor_stats = sensor_data.stats;
   const conv = conversion ?? 'None';
+  const pm100 = parseFloat(sensor_data['pm10.0']);
   const pm25 = (() => {
     switch (averages) {
       case '10m': return sensor_stats['pm2.5_10minute'];
@@ -28,10 +29,12 @@ function parseRemotePurpleAirJson(data, averages?: string, conversion?: string) 
 function parseLocalPurpleAirJson(data, averages?: string, conversion?: string) {
   const conv = conversion ?? 'None';
   const pm25 = parseFloat(data.pm2_5_atm);
+  const pm100 = parseFloat(data.pm10_0]);
   const pm25Cf1 = parseFloat(data.pm2_5_cf_1);
   const humidity = parseFloat(data.current_humidity);
   const sensor = data.Id;
-  return new SensorReading(sensor, pm25, pm25Cf1, humidity, null, conv);
+  const voc = data.gas_680 ? parseFloat(data.gas_680) : null;
+  return new SensorReading(sensor, pm25, pm100, pm25Cf1, humidity, voc, conv);
 }
 
 export class SensorReading {
@@ -49,6 +52,7 @@ export class SensorReading {
   constructor(
       public readonly sensor: string,
       public readonly pm25: number,
+      public readonly pm100: number,
       public readonly pm25Cf1: number,
       public readonly humidity: number,
       public readonly voc: number | null,
@@ -57,7 +61,7 @@ export class SensorReading {
   }
 
   public toString = () : string => {
-    return `SensorReading(AQI=${this.aqi.toFixed(0)}, PM25=${this.pm25}u/m3, PM25_CF1=${this.pm25Cf1}u/m3, Humidity=${this.humidity}, VOC=${this.voc})`;
+    return `SensorReading(AQI=${this.aqi.toFixed(0)}, PM25=${this.pm25}u/m3, PM100=${this.pm100}u/m3, PM25_CF1=${this.pm25Cf1}u/m3, Humidity=${this.humidity}, VOC=${this.voc})`;
   };
 
   get aqi(): number {
