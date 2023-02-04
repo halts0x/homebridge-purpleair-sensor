@@ -27,7 +27,7 @@ class PurpleAirSensor implements AccessoryPlugin {
   static readonly DEFAULT_UPDATE_INTERVAL_SECS = 300;
 
   // Never update more frequently than the following value.
-  static readonly MIN_UPDATE_INTERVAL_MS = 30 * 1000;
+  static readonly MIN_UPDATE_INTERVAL_MS = 20 * 1000;
 
   private readonly logger: Logging;
   private readonly name: string;
@@ -181,6 +181,7 @@ class PurpleAirSensor implements AccessoryPlugin {
   updateHomeKit(aqiInsteadOfDensity: boolean) {
     if (this.lastReading !== undefined) {
       this.service.setCharacteristic(hap.Characteristic.AirQuality, this.lastReading.airQualityHomekitReading);
+      this.service.setCharacteristic(hap.Characteristic.PM10Density, this.lastReading.pm100);
       if (aqiInsteadOfDensity) {
         this.service.setCharacteristic(hap.Characteristic.PM2_5Density, this.lastReading.aqi);
       } else {
