@@ -92,15 +92,15 @@ export class SensorReading {
     // This calculation was lifted from https://github.com/SANdood/homebridge-purpleair.
     if (aqi === undefined) {
       return 0; // Error or unknown response
-    } else if (aqi <= 50) {
+    } else if (aqi <= config.AQExcellent) {
       return 1; // Return EXCELLENT
-    } else if (aqi <= 100) {
+    } else if (aqi <= config.AQGood) {
       return 2; // Return GOOD
-    } else if (aqi <= 150) {
+    } else if (aqi <= config.AQFair) {
       return 3; // Return FAIR
-    } else if (aqi <= 200) {
+    } else if (aqi <= config.AQInf) {
       return 4; // Return INFERIOR
-    } else if (aqi > 200) {
+    } else if (aqi > config.AQInf) {
       return 5; // Return POOR (Homekit only goes to cat 5, so combined the last two AQI cats of Very Unhealty and Hazardous.
     }
     return 0;
