@@ -21,6 +21,11 @@ export = (api: API) => {
   api.registerAccessory('PurpleAirSensor', PurpleAirSensor);
 };
 
+declare global {
+  var AQExcellent: number;
+}
+
+
 class PurpleAirSensor implements AccessoryPlugin {
 
   // By default, only fetch new data every 5 mins.
