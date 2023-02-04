@@ -47,6 +47,8 @@ class PurpleAirSensor implements AccessoryPlugin {
   private readonly service: Service;
   private readonly informationService: Service;
   private lastReading?: SensorReading;
+  
+ public AQExcellent: number;
 
   constructor(logger: Logging, config: AccessoryConfig, api: API) {
     this.logger = logger;
@@ -56,6 +58,7 @@ class PurpleAirSensor implements AccessoryPlugin {
     this.localIPAddress = config.localIPAddress;
     this.apiReadKey = config.apiReadKey;
     this.service = new hap.Service.AirQualitySensor(this.name);
+    this.AQExcellent = config.AQExcellent;
 
     this.verboseLogging = config.verboseLogging;
 
