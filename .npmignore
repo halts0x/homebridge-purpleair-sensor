@@ -7,7 +7,7 @@
 .eslintrc
 
 # typescript
-tsconfig.json
+#tsconfig.json
 
 # vscode
 .vscode
