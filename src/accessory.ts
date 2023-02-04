@@ -21,10 +21,6 @@ export = (api: API) => {
   api.registerAccessory('PurpleAirSensor', PurpleAirSensor);
 };
 
-declare global {
-  var AQExcellent: number;
-}
-
 
 class PurpleAirSensor implements AccessoryPlugin {
 
@@ -53,6 +49,7 @@ class PurpleAirSensor implements AccessoryPlugin {
   private readonly informationService: Service;
   private lastReading?: SensorReading;
   public AQExcellent: number;
+  public AQLevels: number[];
 
   constructor(logger: Logging, config: AccessoryConfig, api: API) {
     this.logger = logger;
@@ -63,7 +60,9 @@ class PurpleAirSensor implements AccessoryPlugin {
     this.apiReadKey = config.apiReadKey;
     this.service = new hap.Service.AirQualitySensor(this.name);
     this.AQExcellent = config.AQExcellent;
-
+    this.AQLevels = [config.AQExcellent, config.AQGood, config.AQFair, config.AQInf];
+    
+    
     this.verboseLogging = config.verboseLogging;
 
     if (config.updateIntervalSecs) {
@@ -185,9 +184,28 @@ class PurpleAirSensor implements AccessoryPlugin {
     return this.lastReading ? this.lastReading.updateTimeMs > Date.now() - this.updateIntervalMs : false;
   }
 
+  aqi2Homekit(aqi: number): number {
+    // This calculation was lifted from https://github.com/SANdood/homebridge-purpleair.
+    if (aqi === undefined) {
+      return 0; // Error or unknown response
+    } else if (aqi <= this.AQLevels[0]) {
+      return 1; // Return EXCELLENT
+    } else if (aqi <= this.AQLevels[1]) {
+      return 2; // Return GOOD
+    } else if (aqi <= this.AQLevels[2]) {
+      return 3; // Return FAIR
+    } else if (aqi <= this.AQLevels[3]) {
+      return 4; // Return INFERIOR
+    } else if (aqi > this.AQLevels[3]) {
+      return 5; // Return POOR (Homekit only goes to cat 5, so combined the last two AQI cats of Very Unhealty and Hazardous.
+    }
+    return 0;
+  }
+  
   updateHomeKit(aqiInsteadOfDensity: boolean) {
     if (this.lastReading !== undefined) {
-      this.service.setCharacteristic(hap.Characteristic.AirQuality, this.lastReading.airQualityHomekitReading);
+      
+      this.service.setCharacteristic(hap.Characteristic.AirQuality, this.aqi2Homekit(this.lastReading.airQualityHomekitReading));
       this.service.setCharacteristic(hap.Characteristic.PM10Density, this.lastReading.pm100);
       if (aqiInsteadOfDensity) {
         this.service.setCharacteristic(hap.Characteristic.PM2_5Density, this.lastReading.aqi);
