@@ -49,6 +49,7 @@ class PurpleAirSensor implements AccessoryPlugin {
   private readonly informationService: Service;
   private lastReading?: SensorReading;
   public AQLevels: number[];
+  public live: string;
 
   constructor(logger: Logging, config: AccessoryConfig, api: API) {
     this.logger = logger;
@@ -59,6 +60,7 @@ class PurpleAirSensor implements AccessoryPlugin {
     this.apiReadKey = config.apiReadKey;
     this.service = new hap.Service.AirQualitySensor(this.name);
     this.AQLevels = [config.AQExcellent, config.AQGood, config.AQFair, config.AQInf];
+    this.live = config.live ? '?live=true': '';
     
     
     this.verboseLogging = config.verboseLogging;
@@ -112,7 +114,7 @@ class PurpleAirSensor implements AccessoryPlugin {
     const axiosInstance = axios.create();
 
     if (this.localIPAddress !== undefined) {
-      url = 'http://' + this.localIPAddress + '/json';
+      url = 'http://' + this.localIPAddress + '/json' + this.live;
       usesLocalSensor = true;
     } else {
       url += '/' + this.sensor;
