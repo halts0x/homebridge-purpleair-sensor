@@ -86,7 +86,7 @@
 "minimum":15
        },
      "live": {
-        "title": "live data vs 2min average",
+        "title": "Live data (vs 2min average)",
         "type": "boolean",
        "default": true
       }, 
