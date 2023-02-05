@@ -3,6 +3,7 @@
 Custom air quality levels
 
 custom refresh rate config
+data 2min average vs live
 
 PM10.0 level
 
