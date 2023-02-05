@@ -84,10 +84,6 @@ export class SensorReading {
     }
   }
 
-  get airQualityHomekitReading(): number {
-    return this.aqi;
-  }
-
   static pmToAQandU(pm: number): number {
     // formula found on https://www.purpleair.com/map, shown when you hover on the `?` next to `Conversion`
     // PM2.5 (µg/m³) = 0.778 x PA + 2.65
