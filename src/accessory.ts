@@ -202,7 +202,7 @@ class PurpleAirSensor implements AccessoryPlugin {
   updateHomeKit(aqiInsteadOfDensity: boolean) {
     if (this.lastReading !== undefined) {
      
-      this.service.setCharacteristic(hap.Characteristic.AirQuality, this.aqi2Homekit(this.lastReading.airQualityHomekitReading));
+      this.service.setCharacteristic(hap.Characteristic.AirQuality, this.aqi2Homekit(this.lastReading.aqi));
       this.service.setCharacteristic(hap.Characteristic.PM10Density, this.lastReading.pm100);
       if (aqiInsteadOfDensity) {
         this.service.setCharacteristic(hap.Characteristic.PM2_5Density, this.lastReading.aqi);
