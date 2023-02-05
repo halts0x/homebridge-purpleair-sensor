@@ -24,7 +24,7 @@ export = (api: API) => {
 
 class PurpleAirSensor implements AccessoryPlugin {
 
-  // By default, only fetch new data every 5 mins.
+  // By default, only fetch new data every 40 secs.
   static readonly DEFAULT_UPDATE_INTERVAL_SECS = 40;
 
   // Never update more frequently than the following value.
@@ -48,7 +48,6 @@ class PurpleAirSensor implements AccessoryPlugin {
   private readonly service: Service;
   private readonly informationService: Service;
   private lastReading?: SensorReading;
-  public AQExcellent: number;
   public AQLevels: number[];
 
   constructor(logger: Logging, config: AccessoryConfig, api: API) {
@@ -59,7 +58,6 @@ class PurpleAirSensor implements AccessoryPlugin {
     this.localIPAddress = config.localIPAddress;
     this.apiReadKey = config.apiReadKey;
     this.service = new hap.Service.AirQualitySensor(this.name);
-    this.AQExcellent = config.AQExcellent;
     this.AQLevels = [config.AQExcellent, config.AQGood, config.AQFair, config.AQInf];
     
     
@@ -185,7 +183,6 @@ class PurpleAirSensor implements AccessoryPlugin {
   }
 
   aqi2Homekit(aqi: number): number {
-    // This calculation was lifted from https://github.com/SANdood/homebridge-purpleair.
     if (aqi === undefined) {
       return 0; // Error or unknown response
     } else if (aqi <= this.AQLevels[0]) {
@@ -204,7 +201,7 @@ class PurpleAirSensor implements AccessoryPlugin {
   
   updateHomeKit(aqiInsteadOfDensity: boolean) {
     if (this.lastReading !== undefined) {
-      
+     
       this.service.setCharacteristic(hap.Characteristic.AirQuality, this.aqi2Homekit(this.lastReading.airQualityHomekitReading));
       this.service.setCharacteristic(hap.Characteristic.PM10Density, this.lastReading.pm100);
       if (aqiInsteadOfDensity) {
