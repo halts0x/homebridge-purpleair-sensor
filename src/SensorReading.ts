@@ -85,26 +85,7 @@ export class SensorReading {
   }
 
   get airQualityHomekitReading(): number {
-    return SensorReading.aqiToHomekit(this.aqi);
-  }
-
-  static aqiToHomekit(aqi: number): number {
-  /*  // This calculation was lifted from https://github.com/SANdood/homebridge-purpleair.
-    if (aqi === undefined) {
-      return 0; // Error or unknown response
-    } else if (aqi <= AQLevels[0]) {
-      return 1; // Return EXCELLENT
-    } else if (aqi <= AQLevels[1]) {
-      return 2; // Return GOOD
-    } else if (aqi <= AQLevels[2]) {
-      return 3; // Return FAIR
-    } else if (aqi <= AQLevels[3]) {
-      return 4; // Return INFERIOR
-    } else if (aqi > AQLevels[3]) {
-      return 5; // Return POOR (Homekit only goes to cat 5, so combined the last two AQI cats of Very Unhealty and Hazardous.
-    }
-    return 0;*/
-    return aqi;
+    return this.aqi;
   }
 
   static pmToAQandU(pm: number): number {
